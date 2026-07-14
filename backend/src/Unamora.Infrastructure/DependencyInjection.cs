@@ -65,6 +65,9 @@ public static class DependencyInjection
         services.AddScoped<ISmsService, SmsService>();
         services.AddScoped<IOcrService, OcrService>();
         services.AddScoped<IFileStorageService, LocalFileStorageService>();
+        services.AddSingleton<IAiAssistantService, AiAssistantService>();
+        services.AddSingleton<INotificationService, NotificationService>();
+        services.AddSingleton<IFraudRiskService, FraudRiskService>();
 
         return services;
     }

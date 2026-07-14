@@ -49,6 +49,36 @@ public interface IOcrService
     Task<OcrResult> ProcessDocumentAsync(string blobUrl, CancellationToken cancellationToken = default);
 }
 
+public interface IAiAssistantService
+{
+    Task<AiAssistantResponse> AnswerAsync(AiAssistantRequest request, CancellationToken cancellationToken = default);
+}
+
+public record AiAssistantRequest(string Message, string? ConversationId, Guid? UserId);
+public record AiAssistantResponse(string Answer, IReadOnlyList<string> Sources, bool RequiresHumanSupport, string CorrelationId);
+
+public interface INotificationService
+{
+    Task QueueAsync(NotificationMessage message, CancellationToken cancellationToken = default);
+}
+
+public record NotificationMessage(
+    Guid RecipientUserId,
+    string Type,
+    string Title,
+    string Body,
+    IReadOnlyList<string> Channels,
+    string IdempotencyKey,
+    DateTimeOffset? DeliverAfter = null);
+
+public interface IFraudRiskService
+{
+    Task<FraudRiskAssessment> AssessAsync(FraudRiskRequest request, CancellationToken cancellationToken = default);
+}
+
+public record FraudRiskRequest(string EventType, Guid SubjectId, IReadOnlyDictionary<string, string> Signals);
+public record FraudRiskAssessment(int Score, string Level, IReadOnlyList<string> Reasons, bool RequiresReview);
+
 public record OcrResult(string? ExtractedText, string? ExtractedDataJson, bool Success, string? ErrorMessage);
 
 public class MatchingResultDto

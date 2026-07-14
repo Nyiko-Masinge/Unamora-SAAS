@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import './ChatList.css';
 
 interface Conversation {
@@ -16,7 +15,6 @@ export const ChatList: React.FC = () => {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetchConversations();
@@ -39,11 +37,11 @@ export const ChatList: React.FC = () => {
   );
 
   const handleSelectConversation = (conversationId: string) => {
-    navigate(`/chat/${conversationId}`);
+    window.location.hash = `/chat/${conversationId}`;
   };
 
   const handleStartNewChat = () => {
-    navigate('/chat/new');
+    window.location.hash = '/chat/new';
   };
 
   if (loading) return <div className="chat-list loading">Loading conversations...</div>;

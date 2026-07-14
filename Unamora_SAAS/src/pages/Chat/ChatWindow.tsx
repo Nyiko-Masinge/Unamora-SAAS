@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import './ChatWindow.css';
 
 interface ChatMessage {
@@ -21,11 +20,9 @@ interface ChatAttachment {
 }
 
 export const ChatWindow: React.FC = () => {
-  const { conversationId } = useParams<{ conversationId: string }>();
+  const conversationId = window.location.hash.split('/').pop();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
-  const [otherUserTyping, setOtherUserTyping] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -78,7 +75,6 @@ export const ChatWindow: React.FC = () => {
   };
 
   const handleTyping = async () => {
-    setIsTyping(true);
     try {
       await fetch('/api/chat/typing-status', {
         method: 'POST',
@@ -92,14 +88,6 @@ export const ChatWindow: React.FC = () => {
       console.error('Failed to update typing status:', error);
     }
 
-    setTimeout(() => {
-      setIsTyping(false);
-    }, 3000);
-  };
-
-  const uploadFile = async (file: File) => {
-    // File upload implementation
-    console.log('Uploading file:', file.name);
   };
 
   if (loading) return <div className="chat-window loading">Loading messages...</div>;
@@ -134,7 +122,6 @@ export const ChatWindow: React.FC = () => {
             {msg.readAt && <span className="read-indicator">✓✓</span>}
           </div>
         ))}
-        {otherUserTyping && <div className="typing-indicator">Someone is typing...</div>}
       </div>
 
       <form onSubmit={sendMessage} className="message-input-form">

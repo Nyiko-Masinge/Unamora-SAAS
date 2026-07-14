@@ -15,4 +15,11 @@ public class ClientProfile : BaseEntity
     public decimal? DefaultLongitude { get; set; }
     public int TotalJobsPosted { get; set; }
     public decimal? AverageClientRating { get; set; }
+
+    public ICollection<Address> Addresses { get; set; } = new List<Address>();
+    public ICollection<PaymentMethod> PaymentMethods { get; set; } = new List<PaymentMethod>();
+    public ClientPreference? Preference { get; set; }
+    public ICollection<SavedTradesperson> SavedTradespersons { get; set; } = new List<SavedTradesperson>();
+    public ICollection<RecentlyViewedTradesperson> RecentlyViewed { get; set; } = new List<RecentlyViewedTradesperson>();
 }
+

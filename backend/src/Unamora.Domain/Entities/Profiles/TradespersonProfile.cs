@@ -1,5 +1,7 @@
 using Unamora.Domain.Common;
+using Unamora.Domain.Entities.Portfolio;
 using Unamora.Domain.Enums;
+
 
 namespace Unamora.Domain.Entities.Profiles;
 

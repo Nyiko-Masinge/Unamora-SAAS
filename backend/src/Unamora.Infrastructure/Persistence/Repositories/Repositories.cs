@@ -102,6 +102,13 @@ public class TradespersonProfileRepository(UnamoraDbContext context) : ITradespe
             .Include(p => p.PortfolioProjects)
             .FirstOrDefaultAsync(p => p.Id == id && !p.IsDeleted, cancellationToken);
 
+    public async Task<IReadOnlyList<TradespersonProfile>> GetAllAsync(CancellationToken cancellationToken = default) =>
+        await context.TradespersonProfiles
+            .Include(p => p.Skills).ThenInclude(s => s.Skill)
+            .Include(p => p.Languages)
+            .Where(p => !p.IsDeleted)
+            .ToListAsync(cancellationToken);
+
     public async Task AddAsync(TradespersonProfile profile, CancellationToken cancellationToken = default) =>
         await context.TradespersonProfiles.AddAsync(profile, cancellationToken);
 
@@ -113,9 +120,15 @@ public class ClientProfileRepository(UnamoraDbContext context) : IClientProfileR
     public Task<ClientProfile?> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken = default) =>
         context.ClientProfiles.FirstOrDefaultAsync(p => p.UserId == userId && !p.IsDeleted, cancellationToken);
 
+    public Task<ClientProfile?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
+        context.ClientProfiles.FirstOrDefaultAsync(p => p.Id == id && !p.IsDeleted, cancellationToken);
+
     public async Task AddAsync(ClientProfile profile, CancellationToken cancellationToken = default) =>
         await context.ClientProfiles.AddAsync(profile, cancellationToken);
+
+    public void Update(ClientProfile profile) => context.ClientProfiles.Update(profile);
 }
+
 
 public class VerificationRepository(UnamoraDbContext context) : IVerificationRepository
 {
@@ -162,3 +175,192 @@ public class PortfolioRepository(UnamoraDbContext context) : IPortfolioRepositor
     public Task<PortfolioMedia?> GetMediaByIdAsync(Guid mediaId, CancellationToken cancellationToken = default) =>
         context.PortfolioMedia.FirstOrDefaultAsync(m => m.Id == mediaId && !m.IsDeleted, cancellationToken);
 }
+
+public class AddressRepository(UnamoraDbContext context) : IAddressRepository
+{
+    public async Task<IReadOnlyList<Address>> GetByClientProfileIdAsync(Guid clientProfileId, CancellationToken cancellationToken = default) =>
+        await context.Addresses.Where(x => x.ClientProfileId == clientProfileId && !x.IsDeleted).ToListAsync(cancellationToken);
+
+    public Task<Address?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
+        context.Addresses.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted, cancellationToken);
+
+    public async Task AddAsync(Address address, CancellationToken cancellationToken = default) =>
+        await context.Addresses.AddAsync(address, cancellationToken);
+
+    public void Update(Address address) => context.Addresses.Update(address);
+    public void Delete(Address address) { address.IsDeleted = true; address.DeletedAt = DateTime.UtcNow; context.Addresses.Update(address); }
+}
+
+public class PaymentMethodRepository(UnamoraDbContext context) : IPaymentMethodRepository
+{
+    public async Task<IReadOnlyList<PaymentMethod>> GetByClientProfileIdAsync(Guid clientProfileId, CancellationToken cancellationToken = default) =>
+        await context.PaymentMethods.Where(x => x.ClientProfileId == clientProfileId && !x.IsDeleted).ToListAsync(cancellationToken);
+
+    public Task<PaymentMethod?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
+        context.PaymentMethods.FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted, cancellationToken);
+
+    public async Task AddAsync(PaymentMethod paymentMethod, CancellationToken cancellationToken = default) =>
+        await context.PaymentMethods.AddAsync(paymentMethod, cancellationToken);
+
+    public void Update(PaymentMethod paymentMethod) => context.PaymentMethods.Update(paymentMethod);
+
+    public void Delete(PaymentMethod paymentMethod) { paymentMethod.IsDeleted = true; paymentMethod.DeletedAt = DateTime.UtcNow; context.PaymentMethods.Update(paymentMethod); }
+}
+
+
+public class ClientPreferenceRepository(UnamoraDbContext context) : IClientPreferenceRepository
+{
+    public Task<ClientPreference?> GetByClientProfileIdAsync(Guid clientProfileId, CancellationToken cancellationToken = default) =>
+        context.ClientPreferences.FirstOrDefaultAsync(x => x.ClientProfileId == clientProfileId && !x.IsDeleted, cancellationToken);
+
+    public async Task AddAsync(ClientPreference preference, CancellationToken cancellationToken = default) =>
+        await context.ClientPreferences.AddAsync(preference, cancellationToken);
+
+    public void Update(ClientPreference preference) => context.ClientPreferences.Update(preference);
+}
+
+public class SavedTradespersonRepository(UnamoraDbContext context) : ISavedTradespersonRepository
+{
+    public async Task<IReadOnlyList<SavedTradesperson>> GetByClientProfileIdAsync(Guid clientProfileId, CancellationToken cancellationToken = default) =>
+        await context.SavedTradespersons
+            .Include(x => x.TradespersonProfile)
+            .Where(x => x.ClientProfileId == clientProfileId && !x.IsDeleted)
+            .ToListAsync(cancellationToken);
+
+    public Task<SavedTradesperson?> GetAsync(Guid clientProfileId, Guid tradespersonProfileId, CancellationToken cancellationToken = default) =>
+        context.SavedTradespersons.FirstOrDefaultAsync(x => x.ClientProfileId == clientProfileId && x.TradespersonProfileId == tradespersonProfileId && !x.IsDeleted, cancellationToken);
+
+    public async Task AddAsync(SavedTradesperson saved, CancellationToken cancellationToken = default) =>
+        await context.SavedTradespersons.AddAsync(saved, cancellationToken);
+
+    public void Delete(SavedTradesperson saved) { saved.IsDeleted = true; saved.DeletedAt = DateTime.UtcNow; context.SavedTradespersons.Update(saved); }
+}
+
+public class RecentlyViewedTradespersonRepository(UnamoraDbContext context) : IRecentlyViewedTradespersonRepository
+{
+    public async Task<IReadOnlyList<RecentlyViewedTradesperson>> GetRecentAsync(Guid clientProfileId, int count, CancellationToken cancellationToken = default) =>
+        await context.RecentlyViewedTradespeople
+            .Include(x => x.TradespersonProfile)
+            .Where(x => x.ClientProfileId == clientProfileId && !x.IsDeleted)
+            .OrderByDescending(x => x.ViewedAt)
+            .Take(count)
+            .ToListAsync(cancellationToken);
+
+    public async Task AddAsync(RecentlyViewedTradesperson viewed, CancellationToken cancellationToken = default) =>
+        await context.RecentlyViewedTradespeople.AddAsync(viewed, cancellationToken);
+}
+
+public class JobRequestRepository(UnamoraDbContext context) : IJobRequestRepository
+{
+    public Task<JobRequest?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
+        context.JobRequests
+            .Include(x => x.Trade)
+            .FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted, cancellationToken);
+
+    public async Task<IReadOnlyList<JobRequest>> GetByClientProfileIdAsync(Guid clientProfileId, CancellationToken cancellationToken = default) =>
+        await context.JobRequests
+            .Include(x => x.Trade)
+            .Where(x => x.ClientProfileId == clientProfileId && !x.IsDeleted)
+            .OrderByDescending(x => x.CreatedAt)
+            .ToListAsync(cancellationToken);
+
+    public async Task AddAsync(JobRequest request, CancellationToken cancellationToken = default) =>
+        await context.JobRequests.AddAsync(request, cancellationToken);
+
+    public void Update(JobRequest request) => context.JobRequests.Update(request);
+}
+
+public class QuoteRepository(UnamoraDbContext context) : IQuoteRepository
+{
+    public Task<Quote?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
+        context.Quotes
+            .Include(x => x.JobRequest)
+            .Include(x => x.TradespersonProfile)
+            .FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted, cancellationToken);
+
+    public async Task<IReadOnlyList<Quote>> GetByJobRequestIdAsync(Guid jobRequestId, CancellationToken cancellationToken = default) =>
+        await context.Quotes
+            .Include(x => x.TradespersonProfile)
+            .Where(x => x.JobRequestId == jobRequestId && !x.IsDeleted)
+            .ToListAsync(cancellationToken);
+
+    public async Task<IReadOnlyList<Quote>> GetByTradespersonProfileIdAsync(Guid tradespersonProfileId, CancellationToken cancellationToken = default) =>
+        await context.Quotes
+            .Include(x => x.JobRequest)
+            .Where(x => x.TradespersonProfileId == tradespersonProfileId && !x.IsDeleted)
+            .ToListAsync(cancellationToken);
+
+    public async Task AddAsync(Quote quote, CancellationToken cancellationToken = default) =>
+        await context.Quotes.AddAsync(quote, cancellationToken);
+
+    public void Update(Quote quote) => context.Quotes.Update(quote);
+}
+
+public class BookingRepository(UnamoraDbContext context) : IBookingRepository
+{
+    public Task<Booking?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
+        context.Bookings
+            .Include(x => x.JobRequest).ThenInclude(jr => jr.Trade)
+            .Include(x => x.ClientProfile)
+            .Include(x => x.TradespersonProfile)
+            .Include(x => x.TrackingState)
+            .Include(x => x.EventLogs)
+            .FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted, cancellationToken);
+
+    public async Task<IReadOnlyList<Booking>> GetByClientProfileIdAsync(Guid clientProfileId, CancellationToken cancellationToken = default) =>
+        await context.Bookings
+            .Include(x => x.JobRequest).ThenInclude(jr => jr.Trade)
+            .Include(x => x.TradespersonProfile)
+            .Where(x => x.ClientProfileId == clientProfileId && !x.IsDeleted)
+            .OrderByDescending(x => x.ScheduledDate)
+            .ToListAsync(cancellationToken);
+
+    public async Task<IReadOnlyList<Booking>> GetByTradespersonProfileIdAsync(Guid tradespersonProfileId, CancellationToken cancellationToken = default) =>
+        await context.Bookings
+            .Include(x => x.JobRequest).ThenInclude(jr => jr.Trade)
+            .Include(x => x.ClientProfile)
+            .Where(x => x.TradespersonProfileId == tradespersonProfileId && !x.IsDeleted)
+            .OrderByDescending(x => x.ScheduledDate)
+            .ToListAsync(cancellationToken);
+
+    public async Task AddAsync(Booking booking, CancellationToken cancellationToken = default) =>
+        await context.Bookings.AddAsync(booking, cancellationToken);
+
+    public void Update(Booking booking) => context.Bookings.Update(booking);
+}
+
+public class JobTrackingStateRepository(UnamoraDbContext context) : IJobTrackingStateRepository
+{
+    public Task<JobTrackingState?> GetByBookingIdAsync(Guid bookingId, CancellationToken cancellationToken = default) =>
+        context.JobTrackingStates.FirstOrDefaultAsync(x => x.BookingId == bookingId && !x.IsDeleted, cancellationToken);
+
+    public async Task AddAsync(JobTrackingState state, CancellationToken cancellationToken = default) =>
+        await context.JobTrackingStates.AddAsync(state, cancellationToken);
+
+    public void Update(JobTrackingState state) => context.JobTrackingStates.Update(state);
+}
+
+public class JobEventLogRepository(UnamoraDbContext context) : IJobEventLogRepository
+{
+    public async Task<IReadOnlyList<JobEventLog>> GetByBookingIdAsync(Guid bookingId, CancellationToken cancellationToken = default) =>
+        await context.JobEventLogs
+            .Where(x => x.BookingId == bookingId && !x.IsDeleted)
+            .OrderBy(x => x.Timestamp)
+            .ToListAsync(cancellationToken);
+
+    public async Task AddAsync(JobEventLog log, CancellationToken cancellationToken = default) =>
+        await context.JobEventLogs.AddAsync(log, cancellationToken);
+}
+
+public class ReviewRepository(UnamoraDbContext context) : IReviewRepository
+{
+    public async Task<IReadOnlyList<Review>> GetByTradespersonProfileIdAsync(Guid tradespersonProfileId, CancellationToken cancellationToken = default) =>
+        await context.Reviews
+            .Include(x => x.Booking)
+            .Where(x => x.Booking.TradespersonProfileId == tradespersonProfileId && !x.IsDeleted)
+            .ToListAsync(cancellationToken);
+
+    public async Task AddAsync(Review review, CancellationToken cancellationToken = default) =>
+        await context.Reviews.AddAsync(review, cancellationToken);
+}
+

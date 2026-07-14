@@ -25,7 +25,8 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
             .ToDictionary(g => g.Key, g => g.Select(f => f.ErrorMessage).ToArray());
 
         if (failures.Count > 0)
-            throw new ValidationException(failures);
+            throw new Unamora.Application.Common.Exceptions.ValidationException(failures);
+
 
         return await next();
     }

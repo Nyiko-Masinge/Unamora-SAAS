@@ -50,3 +50,32 @@ public interface IOcrService
 }
 
 public record OcrResult(string? ExtractedText, string? ExtractedDataJson, bool Success, string? ErrorMessage);
+
+public class MatchingResultDto
+{
+    public Guid TradespersonId { get; set; }
+    public string BusinessName { get; set; } = string.Empty;
+    public string TradespersonName { get; set; } = string.Empty;
+    public decimal DistanceKm { get; set; }
+    public decimal MatchScore { get; set; }
+    public decimal Rating { get; set; }
+    public int CompletedJobs { get; set; }
+    public decimal HourlyRateMin { get; set; }
+    public decimal HourlyRateMax { get; set; }
+    public string AvailabilityStatus { get; set; } = string.Empty;
+    public int ResponseTimeMinutes { get; set; }
+    public bool IsVerified { get; set; }
+    public decimal DistanceScore { get; set; }
+    public decimal AvailabilityScore { get; set; }
+    public decimal TrustScore { get; set; }
+    public decimal ExperienceScore { get; set; }
+    public decimal PriceScore { get; set; }
+    public decimal ReviewsScore { get; set; }
+    public decimal ReliabilityScore { get; set; }
+}
+
+public interface IMatchingService
+{
+    Task<IEnumerable<MatchingResultDto>> FindMatchesAsync(Guid jobRequestId, CancellationToken cancellationToken = default);
+}
+

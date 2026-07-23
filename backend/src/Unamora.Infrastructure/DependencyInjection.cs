@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Unamora.Application.Common.Interfaces;
+using Unamora.Application.Modules.Payments.Services;
 using Unamora.Domain.Entities.Identity;
 using Unamora.Infrastructure.Identity;
 using Unamora.Infrastructure.Persistence;

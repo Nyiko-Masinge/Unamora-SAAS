@@ -214,7 +214,7 @@ public class PaymentController : ControllerBase
     [HttpDelete("subscription/{id}")]
     public async Task<IActionResult> CancelSubscription(Guid id)
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.UserId ?? Guid.Empty;
         await _subscriptionService.CancelSubscriptionAsync(id, userId);
         return NoContent();
     }

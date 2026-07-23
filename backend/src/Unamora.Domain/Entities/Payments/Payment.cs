@@ -1,4 +1,5 @@
 using Unamora.Domain.Common;
+using Unamora.Domain.Entities.Bookings;
 using Unamora.Domain.Enums;
 
 namespace Unamora.Domain.Entities.Payments;
@@ -6,6 +7,7 @@ namespace Unamora.Domain.Entities.Payments;
 public class Payment : BaseEntity
 {
     public Guid BookingId { get; set; }
+    public Booking Booking { get; set; } = null!;
     public Guid PayerId { get; set; }
     public Guid PayeeId { get; set; }
     public Guid? EscrowAccountId { get; set; }

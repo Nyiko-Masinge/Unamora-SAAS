@@ -125,6 +125,7 @@ public class SubscriptionDto
     public decimal MonthlyRate { get; set; }
     public decimal? AnnualRate { get; set; }
     public bool AutoRenew { get; set; }
+    public bool BillingAnnually { get; set; }
     public string TierName { get; set; }
     public List<string>? Features { get; set; }
 }
@@ -134,6 +135,7 @@ public class UpdateSubscriptionDto
     public Guid SubscriptionId { get; set; }
     public int? NewTier { get; set; }
     public bool? AutoRenew { get; set; }
+    public bool? BillingAnnually { get; set; }
 }
 
 public class CommissionDto

@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Unamora.Domain.Entities.Bookings;
 using Unamora.Domain.Entities.Catalog;
 using Unamora.Domain.Entities.Identity;
+using Unamora.Domain.Entities.Payments;
 using Unamora.Domain.Entities.Portfolio;
 using Unamora.Domain.Entities.Profiles;
 using Unamora.Domain.Entities.Verification;
@@ -25,6 +27,15 @@ public class UnamoraDbContext : IdentityDbContext<ApplicationUser, ApplicationRo
     public DbSet<ClientProfile> ClientProfiles => Set<ClientProfile>();
     public DbSet<Address> Addresses => Set<Address>();
     public DbSet<PaymentMethod> PaymentMethods => Set<PaymentMethod>();
+    public DbSet<Payment> Payments => Set<Payment>();
+    public DbSet<Invoice> Invoices => Set<Invoice>();
+    public DbSet<EscrowAccount> EscrowAccounts => Set<EscrowAccount>();
+    public DbSet<Refund> Refunds => Set<Refund>();
+    public DbSet<PaymentReceipt> PaymentReceipts => Set<PaymentReceipt>();
+    public DbSet<Subscription> Subscriptions => Set<Subscription>();
+    public DbSet<SubscriptionPayment> SubscriptionPayments => Set<SubscriptionPayment>();
+    public DbSet<Commission> Commissions => Set<Commission>();
+    public DbSet<CommissionAdjustment> CommissionAdjustments => Set<CommissionAdjustment>();
     public DbSet<ClientPreference> ClientPreferences => Set<ClientPreference>();
     public DbSet<SavedTradesperson> SavedTradespersons => Set<SavedTradesperson>();
     public DbSet<RecentlyViewedTradesperson> RecentlyViewedTradespeople => Set<RecentlyViewedTradesperson>();

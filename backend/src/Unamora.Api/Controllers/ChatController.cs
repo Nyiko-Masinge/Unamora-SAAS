@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Unamora.Application.Common.Interfaces;
 using Unamora.Application.Modules.Chat.DTOs;
 using Unamora.Application.Modules.Chat.Services;
 
@@ -22,7 +23,7 @@ public class ChatController : ControllerBase
     [HttpPost("conversations")]
     public async Task<ActionResult<ChatConversationDto>> CreateConversation([FromBody] CreateConversationDto dto)
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.UserId ?? Guid.Empty;
         var conversation = await _chatService.CreateConversationAsync(dto, userId);
         return CreatedAtAction(nameof(GetConversation), new { id = conversation.Id }, conversation);
     }

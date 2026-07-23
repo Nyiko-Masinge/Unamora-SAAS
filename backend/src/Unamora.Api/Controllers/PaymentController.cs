@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Unamora.Application.Common.Interfaces;
 using Unamora.Application.Modules.Payments.DTOs;
 using Unamora.Application.Modules.Payments.Services;
 
@@ -37,7 +38,7 @@ public class PaymentController : ControllerBase
     [HttpPost("process")]
     public async Task<ActionResult<PaymentDto>> ProcessPayment([FromBody] CreatePaymentDto dto)
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.UserId ?? Guid.Empty;
         var payment = await _paymentService.CreatePaymentAsync(dto, userId);
         await _paymentService.ProcessPaymentAsync(payment.Id);
         return CreatedAtAction(nameof(GetPayment), new { id = payment.Id }, payment);
@@ -53,7 +54,7 @@ public class PaymentController : ControllerBase
     [HttpGet("history")]
     public async Task<ActionResult<List<PaymentHistoryDto>>> GetPaymentHistory([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.UserId ?? Guid.Empty;
         var history = await _paymentService.GetPaymentHistoryAsync(userId, pageNumber, pageSize);
         return Ok(history);
     }
@@ -76,7 +77,7 @@ public class PaymentController : ControllerBase
     [HttpPost("refund")]
     public async Task<ActionResult<RefundDto>> CreateRefund([FromBody] CreateRefundDto dto)
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.UserId ?? Guid.Empty;
         var refund = await _paymentService.CreateRefundAsync(dto, userId);
         return CreatedAtAction(nameof(GetRefund), new { id = refund.Id }, refund);
     }
@@ -99,7 +100,7 @@ public class PaymentController : ControllerBase
     [HttpPost("invoice")]
     public async Task<ActionResult<InvoiceDto>> CreateInvoice([FromBody] CreateInvoiceDto dto)
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.UserId ?? Guid.Empty;
         var invoice = await _invoiceService.CreateInvoiceAsync(dto, userId);
         return CreatedAtAction(nameof(GetInvoice), new { id = invoice.Id }, invoice);
     }
@@ -114,7 +115,7 @@ public class PaymentController : ControllerBase
     [HttpGet("invoices")]
     public async Task<ActionResult<List<InvoiceDto>>> GetInvoices([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.UserId ?? Guid.Empty;
         var invoices = await _invoiceService.GetUserInvoicesAsync(userId, pageNumber, pageSize);
         return Ok(invoices);
     }
@@ -158,7 +159,7 @@ public class PaymentController : ControllerBase
     [HttpPost("escrow")]
     public async Task<ActionResult<EscrowAccountDto>> CreateEscrow([FromBody] CreatePaymentDto dto)
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.UserId ?? Guid.Empty;
         var payment = await _paymentService.CreatePaymentAsync(dto, userId);
         var escrow = await _escrowService.CreateEscrowAsync(payment.BookingId, payment.Amount, userId);
         return CreatedAtAction(nameof(GetEscrow), new { id = escrow.Id }, escrow);
@@ -174,7 +175,7 @@ public class PaymentController : ControllerBase
     [HttpPost("escrow/release")]
     public async Task<IActionResult> ReleaseEscrow([FromBody] ReleaseEscrowDto dto)
     {
-        var adminUserId = _currentUserService.UserId;
+        var adminUserId = _currentUserService.UserId ?? Guid.Empty;
         await _escrowService.ReleaseEscrowAsync(dto, adminUserId);
         return NoContent();
     }
@@ -190,7 +191,7 @@ public class PaymentController : ControllerBase
     [HttpPost("subscription")]
     public async Task<ActionResult<SubscriptionDto>> CreateSubscription([FromBody] CreateSubscriptionDto dto)
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.UserId ?? Guid.Empty;
         var subscription = await _subscriptionService.CreateSubscriptionAsync(dto, userId);
         return CreatedAtAction(nameof(GetSubscription), new { id = subscription.Id }, subscription);
     }
@@ -198,7 +199,7 @@ public class PaymentController : ControllerBase
     [HttpGet("subscription")]
     public async Task<ActionResult<SubscriptionDto>> GetSubscription()
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.UserId ?? Guid.Empty;
         var subscription = await _subscriptionService.GetUserSubscriptionAsync(userId);
         return Ok(subscription);
     }
@@ -221,7 +222,7 @@ public class PaymentController : ControllerBase
     [HttpPost("subscription/{id}/upgrade")]
     public async Task<ActionResult<SubscriptionDto>> UpgradeSubscription(Guid id, [FromBody] int newTier)
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.UserId ?? Guid.Empty;
         var subscription = await _subscriptionService.UpgradeSubscriptionAsync(id, newTier, userId);
         return Ok(subscription);
     }
@@ -238,7 +239,7 @@ public class PaymentController : ControllerBase
     [HttpGet("commissions")]
     public async Task<ActionResult<List<CommissionDto>>> GetCommissions([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.UserId ?? Guid.Empty;
         var commissions = await _commissionService.GetUserCommissionsAsync(userId, pageNumber, pageSize);
         return Ok(commissions);
     }
@@ -253,7 +254,7 @@ public class PaymentController : ControllerBase
     [HttpGet("commissions/statistics")]
     public async Task<ActionResult<CommissionStatisticsDto>> GetCommissionStatistics()
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.UserId ?? Guid.Empty;
         var statistics = await _commissionService.GetCommissionStatisticsAsync(userId);
         return Ok(statistics);
     }
@@ -261,7 +262,7 @@ public class PaymentController : ControllerBase
     [HttpPost("commission/{id}/pay")]
     public async Task<IActionResult> PayCommission(Guid id)
     {
-        var adminUserId = _currentUserService.UserId;
+        var adminUserId = _currentUserService.UserId ?? Guid.Empty;
         await _commissionService.PayCommissionAsync(id, adminUserId);
         return NoContent();
     }

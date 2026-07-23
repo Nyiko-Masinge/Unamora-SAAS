@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Unamora.Application.Common.Interfaces;
 using Unamora.Application.Modules.Reviews.DTOs;
 using Unamora.Application.Modules.Reviews.Services;
 
@@ -22,7 +23,7 @@ public class ReviewController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<ReviewDto>> CreateReview([FromBody] CreateReviewDto dto)
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.UserId ?? Guid.Empty;
         var review = await _reviewService.CreateReviewAsync(dto, userId);
         return CreatedAtAction(nameof(GetReview), new { id = review.Id }, review);
     }
@@ -55,7 +56,7 @@ public class ReviewController : ControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult<ReviewDto>> UpdateReview(Guid id, [FromBody] CreateReviewDto dto)
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.UserId ?? Guid.Empty;
         var review = await _reviewService.UpdateReviewAsync(id, dto, userId);
         return Ok(review);
     }
@@ -63,7 +64,7 @@ public class ReviewController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteReview(Guid id)
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.UserId ?? Guid.Empty;
         await _reviewService.DeleteReviewAsync(id, userId);
         return NoContent();
     }
@@ -78,7 +79,7 @@ public class ReviewController : ControllerBase
     [HttpPost("{id}/flag")]
     public async Task<IActionResult> FlagReview(Guid id, [FromBody] FlagReviewDto dto)
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.UserId ?? Guid.Empty;
         await _reviewService.FlagReviewAsync(dto, userId);
         return NoContent();
     }
@@ -86,7 +87,7 @@ public class ReviewController : ControllerBase
     [HttpPost("{id}/replies")]
     public async Task<ActionResult<ReviewReplyDto>> CreateReply(Guid id, [FromBody] CreateReviewReplyDto dto)
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.UserId ?? Guid.Empty;
         dto.ReviewId = id;
         var reply = await _reviewService.CreateReplyAsync(dto, userId);
         return CreatedAtAction(nameof(GetReview), new { id = id }, reply);
@@ -95,7 +96,7 @@ public class ReviewController : ControllerBase
     [HttpDelete("replies/{replyId}")]
     public async Task<IActionResult> DeleteReply(Guid replyId)
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.UserId ?? Guid.Empty;
         await _reviewService.DeleteReplyAsync(replyId, userId);
         return NoContent();
     }

@@ -1,7 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using Unamora.Application.Common.Exceptions;
 using Unamora.Application.Common.Interfaces;
+using Unamora.Domain.Entities.Bookings;
 using Unamora.Domain.Entities.Catalog;
 using Unamora.Domain.Entities.Identity;
+using Unamora.Domain.Entities.Payments;
 using Unamora.Domain.Entities.Portfolio;
 using Unamora.Domain.Entities.Profiles;
 using Unamora.Domain.Entities.Verification;
@@ -29,10 +32,14 @@ public class RefreshTokenRepository(UnamoraDbContext context) : IRefreshTokenRep
     public async Task AddAsync(RefreshToken token, CancellationToken cancellationToken = default) =>
         await context.RefreshTokens.AddAsync(token, cancellationToken);
 
-    public async Task RevokeAllForUserAsync(Guid userId, CancellationToken cancellationToken = default)
+    public void RevokeAllForUserAsync(Guid userId, CancellationToken cancellationToken = default)
     {
-        var tokens = await context.RefreshTokens.Where(r => r.UserId == userId && !r.IsRevoked).ToListAsync(cancellationToken);
-        foreach (var token in tokens) { token.IsRevoked = true; token.RevokedAt = DateTime.UtcNow; }
+        var tokens = context.RefreshTokens.Where(r => r.UserId == userId && !r.IsRevoked).ToList();
+        foreach (var token in tokens)
+        {
+            token.IsRevoked = true;
+            token.RevokedAt = DateTime.UtcNow;
+        }
     }
 }
 
@@ -362,5 +369,41 @@ public class ReviewRepository(UnamoraDbContext context) : IReviewRepository
 
     public async Task AddAsync(Review review, CancellationToken cancellationToken = default) =>
         await context.Reviews.AddAsync(review, cancellationToken);
+}
+
+public class PaymentRepository(UnamoraDbContext context) : IPaymentRepository
+{
+    public Task<Payment?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
+        context.Payments
+            .Include(p => p.Booking)
+            .FirstOrDefaultAsync(p => p.Id == id && !p.IsDeleted, cancellationToken);
+
+    public async Task<IReadOnlyList<Payment>> GetByPayerIdAsync(Guid payerId, int pageNumber = 1, int pageSize = 10, CancellationToken cancellationToken = default) =>
+        await context.Payments
+            .Where(p => p.PayerId == payerId && !p.IsDeleted)
+            .OrderByDescending(p => p.ProcessedAt)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+
+    public async Task AddAsync(Payment payment, CancellationToken cancellationToken = default) =>
+        await context.Payments.AddAsync(payment, cancellationToken);
+
+    public void Update(Payment payment) => context.Payments.Update(payment);
+}
+
+public class SubscriptionRepository(UnamoraDbContext context) : ISubscriptionRepository
+{
+    public Task<Subscription?> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken = default) =>
+        context.Subscriptions
+            .FirstOrDefaultAsync(s => s.UserId == userId && s.Status != SubscriptionStatus.Cancelled, cancellationToken);
+
+    public Task<Subscription?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
+        context.Subscriptions.FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
+
+    public async Task AddAsync(Subscription subscription, CancellationToken cancellationToken = default) =>
+        await context.Subscriptions.AddAsync(subscription, cancellationToken);
+
+    public void Update(Subscription subscription) => context.Subscriptions.Update(subscription);
 }
 

@@ -1,6 +1,7 @@
 using Unamora.Domain.Entities.Bookings;
 using Unamora.Domain.Entities.Catalog;
 using Unamora.Domain.Entities.Identity;
+using Unamora.Domain.Entities.Payments;
 using Unamora.Domain.Entities.Portfolio;
 using Unamora.Domain.Entities.Profiles;
 using Unamora.Domain.Entities.Verification;
@@ -104,6 +105,21 @@ public interface IPaymentMethodRepository
     void Delete(PaymentMethod paymentMethod);
 }
 
+public interface IPaymentRepository
+{
+    Task<Payment?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<Payment>> GetByPayerIdAsync(Guid payerId, int pageNumber = 1, int pageSize = 10, CancellationToken cancellationToken = default);
+    Task AddAsync(Payment payment, CancellationToken cancellationToken = default);
+    void Update(Payment payment);
+}
+
+public interface ISubscriptionRepository
+{
+    Task<Subscription?> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken = default);
+    Task<Subscription?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task AddAsync(Subscription subscription, CancellationToken cancellationToken = default);
+    void Update(Subscription subscription);
+}
 
 public interface IClientPreferenceRepository
 {

@@ -42,6 +42,8 @@ public static class DependencyInjection
         services.AddScoped<IClientProfileRepository, ClientProfileRepository>();
         services.AddScoped<IVerificationRepository, VerificationRepository>();
         services.AddScoped<IPortfolioRepository, PortfolioRepository>();
+        services.AddScoped<IPaymentRepository, PaymentRepository>();
+        services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
         
         services.AddScoped<IAddressRepository, AddressRepository>();
         services.AddScoped<IPaymentMethodRepository, PaymentMethodRepository>();
@@ -59,8 +61,12 @@ public static class DependencyInjection
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IDateTimeProvider, DateTimeProvider>();
         services.AddScoped<IMatchingService, MatchingService>();
+        services.AddScoped<IPaymentService, PaymentService>();
+        services.AddScoped<IInvoiceService, InvoiceService>();
+        services.AddScoped<IEscrowService, EscrowService>();
+        services.AddScoped<ISubscriptionService, SubscriptionService>();
+        services.AddScoped<ICommissionService, CommissionService>();
 
-        
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<ISmsService, SmsService>();
         services.AddScoped<IOcrService, OcrService>();

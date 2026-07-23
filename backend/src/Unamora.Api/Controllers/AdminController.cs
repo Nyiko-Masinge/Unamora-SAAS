@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Unamora.Application.Common.Interfaces;
 using Unamora.Application.Modules.Admin.DTOs;
 using Unamora.Application.Modules.Admin.Services;
 
@@ -96,7 +97,7 @@ public class AdminController : ControllerBase
     [HttpPost("verification/{id}/approve")]
     public async Task<IActionResult> ApproveVerification(Guid id, [FromBody] ApproveVerificationDto dto)
     {
-        var adminUserId = _currentUserService.UserId;
+        var adminUserId = _currentUserService.UserId ?? Guid.Empty;
         dto.VerificationQueueId = id;
         await _verificationService.ApproveVerificationAsync(dto, adminUserId);
         return NoContent();
@@ -105,7 +106,7 @@ public class AdminController : ControllerBase
     [HttpPost("verification/{id}/reject")]
     public async Task<IActionResult> RejectVerification(Guid id, [FromBody] RejectVerificationDto dto)
     {
-        var adminUserId = _currentUserService.UserId;
+        var adminUserId = _currentUserService.UserId ?? Guid.Empty;
         dto.VerificationQueueId = id;
         await _verificationService.RejectVerificationAsync(dto, adminUserId);
         return NoContent();
@@ -123,7 +124,7 @@ public class AdminController : ControllerBase
     [AllowAnonymous]
     public async Task<ActionResult<DisputeDto>> CreateDispute([FromBody] CreateDisputeDto dto)
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.UserId ?? Guid.Empty;
         var dispute = await _disputeService.CreateDisputeAsync(dto, userId);
         return CreatedAtAction(nameof(GetDispute), new { id = dispute.Id }, dispute);
     }
@@ -145,7 +146,7 @@ public class AdminController : ControllerBase
     [HttpPost("dispute/{id}/assign")]
     public async Task<ActionResult<DisputeDto>> AssignDispute(Guid id)
     {
-        var adminUserId = _currentUserService.UserId;
+        var adminUserId = _currentUserService.UserId ?? Guid.Empty;
         var dispute = await _disputeService.AssignDisputeAsync(id, adminUserId);
         return Ok(dispute);
     }
@@ -153,7 +154,7 @@ public class AdminController : ControllerBase
     [HttpPost("dispute/{id}/evidence")]
     public async Task<IActionResult> AddEvidence(Guid id, [FromBody] DisputeEvidenceInputDto evidence)
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.UserId ?? Guid.Empty;
         await _disputeService.AddEvidenceAsync(id, evidence, userId);
         return NoContent();
     }
@@ -161,7 +162,7 @@ public class AdminController : ControllerBase
     [HttpPost("dispute/comment")]
     public async Task<IActionResult> AddDisputeComment([FromBody] AddDisputeCommentDto dto)
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.UserId ?? Guid.Empty;
         await _disputeService.AddCommentAsync(dto, userId);
         return NoContent();
     }
@@ -169,7 +170,7 @@ public class AdminController : ControllerBase
     [HttpPost("dispute/resolve")]
     public async Task<IActionResult> ResolveDispute([FromBody] ResolveDisputeDto dto)
     {
-        var adminUserId = _currentUserService.UserId;
+        var adminUserId = _currentUserService.UserId ?? Guid.Empty;
         await _disputeService.ResolveDisputeAsync(dto, adminUserId);
         return NoContent();
     }
@@ -177,7 +178,7 @@ public class AdminController : ControllerBase
     [HttpPost("dispute/appeal")]
     public async Task<IActionResult> CreateAppeal([FromBody] CreateDisputeAppealDto dto)
     {
-        var userId = _currentUserService.UserId;
+        var userId = _currentUserService.UserId ?? Guid.Empty;
         await _disputeService.CreateAppealAsync(dto, userId);
         return NoContent();
     }
@@ -187,7 +188,7 @@ public class AdminController : ControllerBase
     {
         int status = reviewData.status;
         string? decision = reviewData.decision;
-        var adminUserId = _currentUserService.UserId;
+        var adminUserId = _currentUserService.UserId ?? Guid.Empty;
         await _disputeService.ReviewAppealAsync(appealId, status, decision, adminUserId);
         return NoContent();
     }
@@ -267,7 +268,7 @@ public class AdminController : ControllerBase
     [HttpPost("platform-users/{id}/suspend")]
     public async Task<IActionResult> SuspendUser(Guid id, [FromBody] string reason)
     {
-        var adminUserId = _currentUserService.UserId;
+        var adminUserId = _currentUserService.UserId ?? Guid.Empty;
         await _userManagementService.SuspendUserAsync(id, reason, adminUserId);
         return NoContent();
     }
@@ -282,7 +283,7 @@ public class AdminController : ControllerBase
     [HttpDelete("platform-users/{id}")]
     public async Task<IActionResult> DeleteUser(Guid id)
     {
-        var adminUserId = _currentUserService.UserId;
+        var adminUserId = _currentUserService.UserId ?? Guid.Empty;
         await _userManagementService.DeleteUserAsync(id, adminUserId);
         return NoContent();
     }
@@ -348,7 +349,7 @@ public class AdminController : ControllerBase
     [HttpPost("payment/{id}/approve")]
     public async Task<IActionResult> ApprovePayment(Guid id)
     {
-        var adminUserId = _currentUserService.UserId;
+        var adminUserId = _currentUserService.UserId ?? Guid.Empty;
         await _paymentManagementService.ApprovePaymentAsync(id, adminUserId);
         return NoContent();
     }
@@ -356,7 +357,7 @@ public class AdminController : ControllerBase
     [HttpPost("payment/{id}/reject")]
     public async Task<IActionResult> RejectPayment(Guid id, [FromBody] string reason)
     {
-        var adminUserId = _currentUserService.UserId;
+        var adminUserId = _currentUserService.UserId ?? Guid.Empty;
         await _paymentManagementService.RejectPaymentAsync(id, reason, adminUserId);
         return NoContent();
     }

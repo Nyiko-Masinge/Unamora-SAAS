@@ -60,10 +60,11 @@ export const PaymentPage: React.FC = () => {
   const handleUpgradeSubscription = async (tier: number) => {
     try {
       const response = await fetch('/api/payment/subscription', {
-        method: 'POST',
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          tier,
+          subscriptionId: currentSubscription?.id,
+          newTier: tier,
           billingAnnually,
         }),
       });
@@ -163,8 +164,8 @@ export const PaymentPage: React.FC = () => {
                   <td>${payment.amount.toFixed(2)}</td>
                   <td>{payment.bookingDescription}</td>
                   <td>
-                    <span className={`status ${payment.status.toLowerCase()}`}>
-                      {payment.status}
+                    <span className={`status ${getStatusText(payment.status).toLowerCase()}`}>
+                      {getStatusText(payment.status)}
                     </span>
                   </td>
                   <td>
@@ -180,4 +181,23 @@ export const PaymentPage: React.FC = () => {
       </div>
     </div>
   );
+};
+
+const getStatusText = (status: number): string => {
+  switch (status) {
+    case 0:
+      return 'Pending';
+    case 1:
+      return 'Processed';
+    case 2:
+      return 'Failed';
+    case 3:
+      return 'Refunded';
+    case 4:
+      return 'Disputed';
+    case 5:
+      return 'Completed';
+    default:
+      return 'Unknown';
+  }
 };

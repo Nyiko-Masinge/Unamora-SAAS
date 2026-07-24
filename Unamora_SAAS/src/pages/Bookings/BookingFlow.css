@@ -1,0 +1,337 @@
+/* CreateJobRequest - Multi-step booking form */
+.create-job-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.job-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.job-header h1 {
+  font-size: 28px;
+  color: #13231d;
+  margin: 0 0 10px 0;
+}
+
+.job-header p {
+  color: #52635b;
+  font-size: 16px;
+  margin: 0;
+}
+
+/* Progress bar */
+.progress-bar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.progress-bar::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #e0e0e0;
+  z-index: -1;
+}
+
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.progress-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  color: #52635b;
+  font-weight: 600;
+  margin-bottom: 8px;
+  transition: all 0.3s ease;
+}
+
+.progress-step.active .progress-circle {
+  border-color: #13231d;
+  background: #13231d;
+  color: white;
+}
+
+.progress-step.completed .progress-circle {
+  border-color: #4caf50;
+  background: #4caf50;
+  color: white;
+}
+
+.progress-step-label {
+  font-size: 12px;
+  color: #52635b;
+  font-weight: 500;
+  text-align: center;
+}
+
+.progress-step.active .progress-step-label {
+  color: #13231d;
+  font-weight: 600;
+}
+
+/* Step content */
+.step-content {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Form fields */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  color: #13231d;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.form-group .category-select,
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group .category-select:focus {
+  outline: none;
+  border-color: #13231d;
+  box-shadow: 0 0 0 3px rgba(19, 35, 29, 0.1);
+}
+
+.category-select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2313231d' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 40px;
+}
+
+/* Step 1: Service selection */
+.service-description {
+  color: #52635b;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+/* Step 2: Date/Time/Location */
+.date-time-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+@media (max-width: 768px) {
+  .date-time-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Step 3: Budget */
+.budget-options {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.budget-option {
+  flex: 1;
+}
+
+.budget-option input[type="radio"] {
+  display: none;
+}
+
+.budget-option label {
+  display: block;
+  padding: 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s ease;
+  margin-bottom: 0;
+}
+
+.budget-option input[type="radio"]:checked + label {
+  border-color: #ed684a;
+  background: rgba(237, 104, 74, 0.05);
+}
+
+.budget-amount-input {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.budget-amount-input input {
+  flex: 1;
+}
+
+.budget-currency {
+  color: #52635b;
+  font-weight: 600;
+}
+
+/* Action buttons */
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 30px;
+  justify-content: space-between;
+}
+
+.form-actions button {
+  flex: 1;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.form-actions .back-btn {
+  background: #f7f7f2;
+  color: #13231d;
+  border: 1px solid #e0e0e0;
+}
+
+.form-actions .back-btn:hover {
+  background: #e0e0e0;
+}
+
+.form-actions .next-btn,
+.form-actions .submit-btn {
+  background: #13231d;
+  color: white;
+}
+
+.form-actions .next-btn:hover,
+.form-actions .submit-btn:hover {
+  background: #0d1817;
+  box-shadow: 0 4px 12px rgba(19, 35, 29, 0.2);
+}
+
+.form-actions .submit-btn {
+  background: #ed684a;
+}
+
+.form-actions .submit-btn:hover {
+  background: #d85738;
+}
+
+/* Success message */
+.success-message {
+  background: #f0f7f4;
+  border: 1px solid #4caf50;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  color: #2e7d32;
+}
+
+.success-message h2 {
+  margin: 0 0 10px 0;
+  color: #1b5e20;
+}
+
+.success-message p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .create-job-container {
+    margin: 20px auto;
+    padding: 15px;
+  }
+
+  .job-header h1 {
+    font-size: 24px;
+  }
+
+  .progress-bar {
+    margin-bottom: 30px;
+  }
+
+  .progress-circle {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+
+  .budget-options {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .job-header h1 {
+    font-size: 20px;
+  }
+
+  .progress-step-label {
+    font-size: 10px;
+  }
+
+  .progress-circle {
+    width: 32px;
+    height: 32px;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    padding: 10px;
+    font-size: 13px;
+  }
+}

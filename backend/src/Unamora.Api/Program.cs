@@ -54,7 +54,7 @@ using (var scope = app.Services.CreateScope())
     {
         var context = services.GetRequiredService<UnamoraDbContext>();
         var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-        await DbInitializer.SeedAsync(context, userManager);
+        await DbInitializer.SeedAsync(context, userManager, services);
     }
     catch (Exception ex)
     {

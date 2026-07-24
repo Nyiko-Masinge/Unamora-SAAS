@@ -159,8 +159,8 @@ public class QuoteConfiguration : IEntityTypeConfiguration<Domain.Entities.Booki
         builder.Property(x => x.EstimatedHours).HasPrecision(18, 2);
         builder.Property(x => x.HourlyRate).HasPrecision(18, 2);
         builder.Property(x => x.MaterialsCost).HasPrecision(18, 2);
-        builder.HasOne(x => x.JobRequest).WithMany(x => x.Quotes).HasForeignKey(x => x.JobRequestId);
-        builder.HasOne(x => x.TradespersonProfile).WithMany().HasForeignKey(x => x.TradespersonProfileId);
+        builder.HasOne(x => x.JobRequest).WithMany(x => x.Quotes).HasForeignKey(x => x.JobRequestId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(x => x.TradespersonProfile).WithMany().HasForeignKey(x => x.TradespersonProfileId).OnDelete(DeleteBehavior.Restrict);
     }
 }
 
@@ -172,9 +172,10 @@ public class BookingConfiguration : IEntityTypeConfiguration<Domain.Entities.Boo
         builder.Property(x => x.AgreedHourlyRate).HasPrecision(18, 2);
         builder.Property(x => x.EstimatedCost).HasPrecision(18, 2);
         builder.Property(x => x.TotalPaid).HasPrecision(18, 2);
-        builder.HasOne(x => x.ClientProfile).WithMany().HasForeignKey(x => x.ClientProfileId);
-        builder.HasOne(x => x.TradespersonProfile).WithMany().HasForeignKey(x => x.TradespersonProfileId);
-        builder.HasOne(x => x.JobRequest).WithMany().HasForeignKey(x => x.JobRequestId);
+        builder.HasOne(x => x.ClientProfile).WithMany().HasForeignKey(x => x.ClientProfileId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(x => x.TradespersonProfile).WithMany().HasForeignKey(x => x.TradespersonProfileId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(x => x.JobRequest).WithMany().HasForeignKey(x => x.JobRequestId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(x => x.Quote).WithMany().HasForeignKey(x => x.QuoteId).OnDelete(DeleteBehavior.SetNull);
     }
 }
 

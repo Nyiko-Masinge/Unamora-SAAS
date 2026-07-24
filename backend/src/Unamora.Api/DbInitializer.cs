@@ -10,21 +10,18 @@ namespace Unamora.Api;
 
 public static class DbInitializer
 {
-    public static async Task SeedAsync(UnamoraDbContext context, UserManager<ApplicationUser> userManager)
+    public static async Task SeedAsync(UnamoraDbContext context, UserManager<ApplicationUser> userManager, IServiceProvider serviceProvider)
     {
         await context.Database.EnsureCreatedAsync();
 
         // 0. Seed Roles
-        var roleManager = context.GetService<RoleManager<ApplicationRole>>();
-        if (roleManager != null)
+        var roleManager = serviceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
+        var roles = new[] { "Admin", "SuperAdmin", "Client", "Tradesperson" };
+        foreach (var role in roles)
         {
-            var roles = new[] { "Admin", "SuperAdmin", "Client", "Tradesperson" };
-            foreach (var role in roles)
+            if (!await context.Roles.AnyAsync(r => r.Name == role))
             {
-                if (!await context.Roles.AnyAsync(r => r.Name == role))
-                {
-                    await roleManager.CreateAsync(new ApplicationRole { Name = role, NormalizedName = role.ToUpper() });
-                }
+                await roleManager.CreateAsync(new ApplicationRole { Name = role, NormalizedName = role.ToUpper() });
             }
         }
 

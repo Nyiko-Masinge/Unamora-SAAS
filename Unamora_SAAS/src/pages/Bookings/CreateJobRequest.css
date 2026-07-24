@@ -1,0 +1,121 @@
+/* BOOKING FLOW STYLES */
+
+.booking-page {
+  background: #f7f7f2;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+}
+
+.booking-header {
+  max-width: 600px;
+  margin: 0 auto 2rem;
+}
+
+.booking-header h1 {
+  font-size: 1.875rem;
+  color: #13231d;
+  margin: 0 0 0.5rem 0;
+}
+
+.booking-header p {
+  color: #666;
+  margin: 0 0 1.5rem 0;
+}
+
+.progress-bar {
+  height: 4px;
+  background: #e0e0e0;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress {
+  height: 100%;
+  background: #13231d;
+  transition: width 0.3s ease;
+}
+
+.booking-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.booking-content .card {
+  padding: 2rem;
+}
+
+.booking-content h2 {
+  font-size: 1.5rem;
+  color: #13231d;
+  margin: 0 0 1.5rem 0;
+}
+
+.select-input,
+.select-input-wrapper select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  margin-bottom: 1.5rem;
+  transition: all 0.2s ease;
+  background-color: white;
+}
+
+.select-input:focus {
+  outline: none;
+  border-color: #13231d;
+  box-shadow: 0 0 0 3px rgba(19, 35, 29, 0.1);
+}
+
+.budget-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.budget-option {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f7f7f2;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.budget-option:hover {
+  background: #f0f0eb;
+}
+
+.budget-option input[type="radio"] {
+  cursor: pointer;
+}
+
+.budget-option span {
+  font-weight: 500;
+  color: #13231d;
+}
+
+.step-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.step-actions button {
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .step-actions {
+    flex-direction: column;
+  }
+
+  .step-actions button {
+    width: 100%;
+  }
+}

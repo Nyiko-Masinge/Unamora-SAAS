@@ -17,9 +17,10 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("DefaultConnection") ?? "Data Source=unamora.db";
+        var connectionString = configuration.GetConnectionString("DefaultConnection") ?? 
+            "Server=.;Database=UnamoraDB;Integrated Security=true;TrustServerCertificate=true;";
         services.AddDbContext<UnamoraDbContext>(options =>
-            options.UseSqlite(connectionString,
+            options.UseSqlServer(connectionString,
                 b => b.MigrationsAssembly(typeof(UnamoraDbContext).Assembly.FullName)));
 
         services.AddIdentity<ApplicationUser, ApplicationRole>(options =>

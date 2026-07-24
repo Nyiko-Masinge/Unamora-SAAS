@@ -1,0 +1,65 @@
+/* RATING COMPONENT STYLES */
+
+.rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.rating-small .stars {
+  gap: 0.125rem;
+}
+
+.rating-small .star {
+  font-size: 1rem;
+}
+
+.rating-medium .stars {
+  gap: 0.25rem;
+}
+
+.rating-medium .star {
+  font-size: 1.25rem;
+}
+
+.rating-large .stars {
+  gap: 0.5rem;
+}
+
+.rating-large .star {
+  font-size: 1.75rem;
+}
+
+.stars {
+  display: flex;
+  align-items: center;
+}
+
+.star {
+  background: none;
+  border: none;
+  color: #ddd;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+  line-height: 1;
+}
+
+.star:not(:disabled):hover {
+  color: #ed684a;
+  transform: scale(1.1);
+}
+
+.star.filled {
+  color: #ed684a;
+}
+
+.star:disabled {
+  cursor: default;
+}
+
+.rating-label {
+  font-weight: 600;
+  color: #13231d;
+  font-size: 0.875rem;
+}

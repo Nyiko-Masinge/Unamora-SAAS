@@ -14,6 +14,20 @@ public static class DbInitializer
     {
         await context.Database.EnsureCreatedAsync();
 
+        // 0. Seed Roles
+        var roleManager = context.GetService<RoleManager<ApplicationRole>>();
+        if (roleManager != null)
+        {
+            var roles = new[] { "Admin", "SuperAdmin", "Client", "Tradesperson" };
+            foreach (var role in roles)
+            {
+                if (!await context.Roles.AnyAsync(r => r.Name == role))
+                {
+                    await roleManager.CreateAsync(new ApplicationRole { Name = role, NormalizedName = role.ToUpper() });
+                }
+            }
+        }
+
         // 1. Seed Service Categories
         if (!await context.ServiceCategories.AnyAsync())
         {
@@ -59,6 +73,32 @@ public static class DbInitializer
             };
             await context.Skills.AddRangeAsync(skills);
             await context.SaveChangesAsync();
+        }
+
+        // 3.5 Seed Admin User
+        var adminId = Guid.Parse("a1b2c3d4-e5f6-7890-abcd-ef1234567890");
+        var adminUser = await userManager.FindByIdAsync(adminId.ToString());
+        if (adminUser is null)
+        {
+            adminUser = new ApplicationUser
+            {
+                Id = adminId,
+                UserName = "NyikoAdmin",
+                Email = "admin@unamora.com",
+                FirstName = "Nyiko",
+                LastName = "Admin",
+                PhoneNumber = "0831234567",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true,
+                IsActive = true
+            };
+            
+            var passwordHasher = new PasswordHasher<ApplicationUser>();
+            adminUser.PasswordHash = passwordHasher.HashPassword(adminUser, "Nyikomasinge1");
+            await userManager.CreateAsync(adminUser);
+            
+            // Assign Admin role
+            await userManager.AddToRoleAsync(adminUser, "Admin");
         }
 
         // 4. Seed Mock Client User & Profile

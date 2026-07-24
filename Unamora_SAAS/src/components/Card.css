@@ -1,0 +1,35 @@
+/* CARD COMPONENT STYLES */
+
+.card {
+  border-radius: 16px;
+  background-color: white;
+  transition: all 0.2s ease;
+}
+
+.card-default {
+  border: 1px solid #e0e0e0;
+}
+
+.card-elevated {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.card-elevated:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.card-outlined {
+  border: 2px solid #e0e0e0;
+}
+
+.card-p-small {
+  padding: 1rem;
+}
+
+.card-p-medium {
+  padding: 1.5rem;
+}
+
+.card-p-large {
+  padding: 2rem;
+}

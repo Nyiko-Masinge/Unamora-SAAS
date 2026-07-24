@@ -1,0 +1,69 @@
+/* AVATAR COMPONENT STYLES */
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.avatar-small {
+  width: 32px;
+  height: 32px;
+  font-size: 0.75rem;
+}
+
+.avatar-medium {
+  width: 48px;
+  height: 48px;
+  font-size: 1rem;
+}
+
+.avatar-large {
+  width: 80px;
+  height: 80px;
+  font-size: 1.5rem;
+}
+
+.avatar-xlarge {
+  width: 120px;
+  height: 120px;
+  font-size: 2rem;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar .initials {
+  font-weight: 700;
+  color: #13231d;
+}
+
+.status-indicator {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 30%;
+  height: 30%;
+  border-radius: 50%;
+  border: 3px solid white;
+}
+
+.avatar.status-online .status-indicator {
+  background-color: #4caf50;
+}
+
+.avatar.status-away .status-indicator {
+  background-color: #ff9800;
+}
+
+.avatar.status-offline .status-indicator {
+  background-color: #999;
+}

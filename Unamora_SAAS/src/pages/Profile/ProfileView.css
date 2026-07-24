@@ -1,0 +1,295 @@
+/* PROFILE VIEW STYLES */
+
+.profile-view {
+  background: #f7f7f2;
+}
+
+.profile-header {
+  background: white;
+  position: relative;
+}
+
+.header-background {
+  height: 200px;
+  background: linear-gradient(135deg, #13231d 0%, #52635b 100%);
+}
+
+.profile-hero {
+  display: flex;
+  align-items: flex-end;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  margin-top: -60px;
+  position: relative;
+}
+
+.profile-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.profile-info h1 {
+  margin: 0 0 0.5rem 0;
+  font-size: 2rem;
+  color: #13231d;
+}
+
+.headline {
+  color: #666;
+  font-size: 1rem;
+  margin: 0 0 1rem 0;
+}
+
+.location-rating {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.rating-display {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.review-count {
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.profile-content {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.section {
+  margin-bottom: 0;
+}
+
+.section h2 {
+  font-size: 1.25rem;
+  color: #13231d;
+  margin: 0 0 1rem 0;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.section p {
+  color: #666;
+  line-height: 1.6;
+  margin: 0 0 1.5rem 0;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.stat {
+  padding: 1rem;
+  background: #f7f7f2;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.stat strong {
+  display: block;
+  font-size: 1.5rem;
+  color: #13231d;
+  margin-bottom: 0.25rem;
+}
+
+.stat span {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.pricing {
+  background: #f7f7f2;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.price-range {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #13231d;
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.skill-item {
+  padding: 1rem;
+  background: #f7f7f2;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.portfolio-item {
+  cursor: pointer;
+}
+
+.portfolio-image {
+  width: 100%;
+  aspect-ratio: 1;
+  background: #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.portfolio-item h4 {
+  margin: 0 0 0.25rem 0;
+  font-size: 0.875rem;
+  color: #13231d;
+}
+
+.portfolio-item p {
+  color: #999;
+  font-size: 0.75rem;
+  margin: 0;
+}
+
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.review-item {
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.review-item:last-child {
+  border-bottom: none;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.review-text {
+  color: #666;
+  margin: 0.5rem 0;
+  line-height: 1.5;
+}
+
+.review-date {
+  color: #999;
+  font-size: 0.875rem;
+}
+
+.profile-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.sidebar-card {
+  margin: 0;
+}
+
+.sidebar-card h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  color: #13231d;
+}
+
+.verification-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.verification-item {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.check {
+  color: #4caf50;
+  font-weight: 700;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.verification-item strong {
+  font-size: 0.875rem;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.verification-item p {
+  color: #999;
+  font-size: 0.75rem;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .profile-hero {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: -40px;
+  }
+
+  .profile-content {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .portfolio-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

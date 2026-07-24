@@ -1,0 +1,144 @@
+/* BOOKINGS PAGE STYLES */
+
+.bookings-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.page-header h1 {
+  font-size: 1.875rem;
+  color: #13231d;
+  margin: 0;
+}
+
+.tabs {
+  display: flex;
+  gap: 1rem;
+  border-bottom: 2px solid #e0e0e0;
+  margin-bottom: 2rem;
+}
+
+.tab {
+  background: none;
+  border: none;
+  padding: 1rem 0;
+  margin-bottom: -2px;
+  border-bottom: 3px solid transparent;
+  color: #666;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.tab:hover {
+  color: #13231d;
+}
+
+.tab.active {
+  color: #13231d;
+  border-bottom-color: #ed684a;
+}
+
+.bookings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.booking-card {
+  padding: 1.5rem;
+}
+
+.booking-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.booking-info h3 {
+  margin: 0 0 0.5rem 0;
+  color: #13231d;
+  font-size: 1.125rem;
+}
+
+.booking-details {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.booking-pro {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f7f7f2;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.pro-name {
+  font-weight: 600;
+  margin: 0 0 0.25rem 0;
+  color: #13231d;
+}
+
+.pro-title {
+  font-size: 0.875rem;
+  color: #666;
+  margin: 0;
+}
+
+.booking-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.amount {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #13231d;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.empty-state {
+  padding: 3rem;
+  text-align: center;
+}
+
+.empty-state p {
+  color: #666;
+  margin: 0 0 1.5rem 0;
+}
+
+@media (max-width: 768px) {
+  .booking-footer {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .actions {
+    width: 100%;
+  }
+
+  .actions button {
+    flex: 1;
+  }
+}

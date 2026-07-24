@@ -1,0 +1,100 @@
+/* BUTTON COMPONENT STYLES */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+}
+
+/* Button Variants */
+.button-primary {
+  background-color: #13231d;
+  color: white;
+  box-shadow: 0 4px 12px rgba(19, 35, 29, 0.15);
+}
+
+.button-primary:hover:not(:disabled) {
+  background-color: #0d1810;
+  box-shadow: 0 6px 16px rgba(19, 35, 29, 0.25);
+  transform: translateY(-1px);
+}
+
+.button-secondary {
+  background-color: #f7f7f2;
+  color: #13231d;
+  border: 2px solid #e0e0e0;
+}
+
+.button-secondary:hover:not(:disabled) {
+  border-color: #13231d;
+  background-color: #f0f0eb;
+}
+
+.button-tertiary {
+  background-color: transparent;
+  color: #13231d;
+  border: 2px solid #13231d;
+}
+
+.button-tertiary:hover:not(:disabled) {
+  background-color: #13231d;
+  color: white;
+}
+
+.button-danger {
+  background-color: #f44336;
+  color: white;
+}
+
+.button-danger:hover:not(:disabled) {
+  background-color: #d32f2f;
+}
+
+/* Button Sizes */
+.button-small {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.button-medium {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+}
+
+.button-large {
+  padding: 1rem 2rem;
+  font-size: 1.125rem;
+}
+
+.button-full-width {
+  width: 100%;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button .spinner {
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
